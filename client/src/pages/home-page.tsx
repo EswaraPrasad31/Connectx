@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useAuth } from "@/hooks/use-auth";
 import Sidebar from "@/components/sidebar";
 import Stories from "@/components/stories";
@@ -12,8 +12,9 @@ import MessagesModal from "@/components/modals/messages-modal";
 import LogoutModal from "@/components/modals/logout-modal";
 import VoiceIndicator from "@/components/voice-indicator";
 import { useVoiceCommands } from "@/hooks/use-voice-commands";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useLocation } from "wouter";
+import { Loader2 } from "lucide-react";
 
 // Sample posts data for demonstration
 const samplePosts = [
@@ -69,6 +70,8 @@ type ModalState = {
 export default function HomePage() {
   const { user } = useAuth();
   const [_, setLocation] = useLocation();
+  const queryClient = useQueryClient();
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const [activeModals, setActiveModals] = useState<ModalState>({
     search: false,
     create: false, 
@@ -76,11 +79,27 @@ export default function HomePage() {
     messages: false,
     logout: false
   });
+  
+  // Reference to the main content area for scrolling
+  const contentRef = useRef<HTMLDivElement>(null);
 
   // Fetch posts for the feed
   const { data: apiPosts = [], isLoading: isLoadingPosts } = useQuery<any[]>({
     queryKey: ["/api/posts"],
   });
+  
+  // Function to refresh the feed data with visual feedback
+  const refreshFeed = () => {
+    setIsRefreshing(true);
+    queryClient.invalidateQueries({ queryKey: ["/api/posts"] });
+  };
+  
+  // Reset the refreshing state after loading completes
+  useEffect(() => {
+    if (!isLoadingPosts && isRefreshing) {
+      setIsRefreshing(false);
+    }
+  }, [isLoadingPosts, isRefreshing]);
   
   // Use sample posts if no posts are returned from the API
   const posts = apiPosts.length > 0 ? apiPosts : samplePosts;
@@ -102,11 +121,20 @@ export default function HomePage() {
     });
   };
 
+  // Function to scroll to the top of the page and refresh data
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+    refreshFeed();
+  };
+
   // Setup voice commands
   const voiceCommands = {
     "home": () => {
       closeAllModals();
-      setLocation('/');
+      scrollToTop();
     },
     "search": () => toggleModal("search"),
     "explore": () => console.log("Navigate to explore"),
@@ -158,14 +186,22 @@ export default function HomePage() {
             else if (page === 'notifications') toggleModal('notifications');
             else if (page === 'messages') toggleModal('messages');
             else if (page === 'logout') toggleModal('logout');
-            else if (page === 'home') setLocation('/');
+            else if (page === 'home') {
+              scrollToTop();
+            }
             else console.log(`Navigate to ${page}`);
           }} 
         />
 
         {/* Main Content - Positioned to extend to suggestion panel */}
-        <main className="flex-1 md:ml-64 pb-16 md:pb-0 mr-0 lg:mr-80">
-          <div className="px-1 pt-4 md:pt-6 md:ml-12 md:pr-4">
+        <main className="flex-1 md:ml-64 pb-16 md:pb-0 mr-0 lg:mr-80 relative" ref={contentRef}>
+          {/* Loading Indicator */}
+          {(isRefreshing || isLoadingPosts) && (
+            <div className="absolute top-8 left-1/2 transform -translate-x-1/2 z-10">
+              <Loader2 className="h-8 w-8 animate-spin text-primary" />
+            </div>
+          )}
+          <div className={`px-1 pt-4 md:pt-6 md:ml-12 md:pr-4 transition-opacity duration-300 ${isRefreshing || isLoadingPosts ? 'opacity-50' : 'opacity-100'}`}>
             {/* Stories Section */}
             <Stories />
             
@@ -213,7 +249,9 @@ export default function HomePage() {
       <MobileNav 
         onNavigate={(page) => {
           if (page === 'search') toggleModal('search');
-          else if (page === 'home') setLocation('/');
+          else if (page === 'home') {
+            scrollToTop();
+          }
           else console.log(`Navigate to ${page}`);
         }}
         userImage={user.profileImage || "https://randomuser.me/api/portraits/men/1.jpg"}
