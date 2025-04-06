@@ -111,9 +111,9 @@ export default function HomePage() {
           }} 
         />
 
-        {/* Main Content */}
-        <main className="flex-1 md:ml-64 pb-16 md:pb-0">
-          <div className="max-w-lg mx-auto px-2 pt-4 md:pt-6">
+        {/* Main Content - Positioned to left side */}
+        <main className="flex-1 md:ml-64 pb-16 md:pb-0 max-w-[470px]">
+          <div className="px-1 pt-4 md:pt-6 ml-auto md:ml-12">
             {/* Stories Section */}
             <Stories />
             
@@ -153,7 +153,7 @@ export default function HomePage() {
           </div>
         </main>
 
-        {/* Suggestions Panel (desktop only) */}
+        {/* Suggestions Panel (desktop only) as a true sidebar */}
         <Suggestions user={user} />
       </div>
 
