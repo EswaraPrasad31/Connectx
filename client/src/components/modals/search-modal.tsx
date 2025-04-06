@@ -28,11 +28,7 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
       <DialogContent className="sm:max-w-md">
         <DialogHeader className="flex flex-row items-center justify-between">
           <DialogTitle>Search</DialogTitle>
-          <DialogClose asChild>
-            <button className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300">
-              <X className="h-4 w-4" />
-            </button>
-          </DialogClose>
+          {/* Removed extra close button, dialog already has a built-in close button */}
         </DialogHeader>
         
         <div className="p-4">
