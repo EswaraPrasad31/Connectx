@@ -111,14 +111,14 @@ export default function HomePage() {
           }} 
         />
 
-        {/* Main Content - Positioned to left side */}
-        <main className="flex-1 md:ml-64 pb-16 md:pb-0 max-w-[470px]">
-          <div className="px-1 pt-4 md:pt-6 ml-auto md:ml-12">
+        {/* Main Content - Positioned to extend to suggestion panel */}
+        <main className="flex-1 md:ml-64 pb-16 md:pb-0 mr-0 lg:mr-80">
+          <div className="px-1 pt-4 md:pt-6 md:ml-12 md:pr-4">
             {/* Stories Section */}
             <Stories />
             
             {/* Posts Feed */}
-            <div className="space-y-4">
+            <div className="space-y-4 max-w-[470px]">
               {isLoadingPosts ? (
                 // Loading skeleton
                 Array(3).fill(0).map((_, i) => (

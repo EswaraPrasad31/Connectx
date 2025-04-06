@@ -40,7 +40,7 @@ const suggestionsData = [
 
 export default function Suggestions({ user }: SuggestionsProps) {
   return (
-    <aside className="hidden lg:block w-80 p-8 fixed right-0 top-0 h-full overflow-y-auto border-l border-gray-100 dark:border-gray-700 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm">
+    <aside className="hidden lg:block w-80 p-8 fixed right-0 top-0 h-full overflow-y-auto border-l border-gray-100 dark:border-gray-700 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm z-10">
       {/* User Profile */}
       <div className="flex items-center mb-8">
         <Avatar className="h-14 w-14 ring-2 ring-primary/20 border-2 border-white dark:border-gray-900">
