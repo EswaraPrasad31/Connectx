@@ -137,12 +137,12 @@ export default function HomePage() {
       scrollToTop();
     },
     "search": () => toggleModal("search"),
-    "explore": () => console.log("Navigate to explore"),
+    "explore": () => setLocation("/explore"),
     "reels": () => console.log("Navigate to reels"),
     "messages": () => toggleModal("messages"),
     "notifications": () => toggleModal("notifications"),
     "create": () => toggleModal("create"),
-    "profile": () => console.log("Navigate to profile"),
+    "profile": () => setLocation("/profile"),
     "logout": () => toggleModal("logout"),
     "dark mode": () => document.documentElement.classList.add("dark"),
     "light mode": () => document.documentElement.classList.remove("dark")
@@ -150,7 +150,7 @@ export default function HomePage() {
 
   const { isListening } = useVoiceCommands(voiceCommands);
 
-  if (!user) return null;
+  if (!user) return <div></div>;
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300">
@@ -188,6 +188,12 @@ export default function HomePage() {
             else if (page === 'logout') toggleModal('logout');
             else if (page === 'home') {
               scrollToTop();
+            }
+            else if (page === 'explore') {
+              setLocation('/explore');
+            }
+            else if (page === 'profile') {
+              setLocation('/profile');
             }
             else console.log(`Navigate to ${page}`);
           }} 
@@ -251,6 +257,12 @@ export default function HomePage() {
           if (page === 'search') toggleModal('search');
           else if (page === 'home') {
             scrollToTop();
+          }
+          else if (page === 'explore') {
+            setLocation('/explore');
+          }
+          else if (page === 'profile') {
+            setLocation('/profile');
           }
           else console.log(`Navigate to ${page}`);
         }}

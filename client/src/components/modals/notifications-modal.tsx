@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import { X } from 'lucide-react';
 import { 
   Dialog, 
@@ -41,6 +42,16 @@ const notificationsData = [
 ];
 
 export default function NotificationsModal({ isOpen, onClose }: NotificationsModalProps) {
+  // Add state to track followed users
+  const [followed, setFollowed] = useState<Record<number, boolean>>({});
+  
+  const handleFollow = (id: number) => {
+    setFollowed(prev => ({
+      ...prev,
+      [id]: !prev[id]
+    }));
+  };
+  
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-md">
@@ -68,8 +79,15 @@ export default function NotificationsModal({ isOpen, onClose }: NotificationsMod
                   </p>
                 </div>
                 {notification.showFollowButton && (
-                  <Button size="sm" className="bg-[#00D166] hover:bg-opacity-90 text-white text-sm font-semibold py-1.5 px-3 rounded">
-                    Follow
+                  <Button 
+                    size="sm" 
+                    className={`${followed[notification.id] 
+                      ? 'bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200' 
+                      : 'bg-[#00D166] hover:bg-opacity-90 text-white'} 
+                      text-sm font-semibold py-1.5 px-3 rounded transition-colors`}
+                    onClick={() => handleFollow(notification.id)}
+                  >
+                    {followed[notification.id] ? 'Following' : 'Follow'}
                   </Button>
                 )}
               </div>

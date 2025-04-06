@@ -14,27 +14,41 @@ type MessagesModalProps = {
   onClose: () => void;
 };
 
-// Sample conversations data
+// Sample conversations data with names from stories section
 const conversationsData = [
   {
     id: 1,
-    username: "sophie",
-    profileImage: "https://randomuser.me/api/portraits/women/2.jpg",
+    username: "jaideep",
+    profileImage: "https://randomuser.me/api/portraits/men/42.jpg",
     status: "Active now",
     isSelected: false
   },
   {
     id: 2,
-    username: "alex_dev",
-    profileImage: "https://randomuser.me/api/portraits/men/3.jpg",
+    username: "shiva",
+    profileImage: "https://randomuser.me/api/portraits/men/33.jpg",
     status: "Sent you a message • 2h",
     isSelected: true
   },
   {
     id: 3,
-    username: "maria_p",
-    profileImage: "https://randomuser.me/api/portraits/women/4.jpg",
+    username: "abhiram",
+    profileImage: "https://randomuser.me/api/portraits/men/45.jpg",
     status: "Active 5h ago",
+    isSelected: false
+  },
+  {
+    id: 4,
+    username: "sarfraz",
+    profileImage: "https://randomuser.me/api/portraits/men/56.jpg",
+    status: "Sent you a post • 1d",
+    isSelected: false
+  },
+  {
+    id: 5,
+    username: "maharshith",
+    profileImage: "https://randomuser.me/api/portraits/men/48.jpg",
+    status: "Seen 3h ago",
     isSelected: false
   }
 ];
@@ -43,7 +57,7 @@ const conversationsData = [
 const messagesData = [
   {
     id: 1,
-    senderId: 2, // alex_dev
+    senderId: 2, // shiva
     text: "Hey! How's your project coming along?",
     timestamp: new Date(Date.now() - 3600000 * 3), // 3 hours ago
     isSentByCurrentUser: false
@@ -57,7 +71,7 @@ const messagesData = [
   },
   {
     id: 3,
-    senderId: 2, // alex_dev
+    senderId: 2, // shiva
     text: "That sounds awesome! Can you show me a demo sometime?",
     timestamp: new Date(Date.now() - 3600000), // 1 hour ago
     isSentByCurrentUser: false
@@ -95,17 +109,18 @@ export default function MessagesModal({ isOpen, onClose }: MessagesModalProps) {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-4xl h-[600px] p-0">
+        {/* Close button - positioned outside the flex layout */}
+        <DialogClose className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground">
+          <X className="h-4 w-4" />
+          <span className="sr-only">Close</span>
+        </DialogClose>
+        
         <div className="flex h-full">
           {/* Messages Sidebar */}
           <div className="w-1/3 border-r border-gray-200 dark:border-gray-700 overflow-hidden">
             <div className="p-4 border-b border-gray-200 dark:border-gray-700">
-              <div className="flex items-center justify-between">
+              <div className="flex items-center">
                 <h3 className="text-lg font-semibold">Messages</h3>
-                <DialogClose asChild>
-                  <button className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 lg:hidden">
-                    <X className="h-4 w-4" />
-                  </button>
-                </DialogClose>
               </div>
             </div>
             

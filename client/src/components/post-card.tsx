@@ -29,6 +29,9 @@ export default function PostCard({ post }: PostCardProps) {
   const [isLiked, setIsLiked] = useState(false);
   const [likesCount, setLikesCount] = useState(post.likeCount);
   const [comment, setComment] = useState('');
+  const [showComments, setShowComments] = useState(false);
+  const [isShared, setIsShared] = useState(false);
+  const [isBookmarked, setIsBookmarked] = useState(false);
   const queryClient = useQueryClient();
 
   // Format time ago string
@@ -103,18 +106,47 @@ export default function PostCard({ post }: PostCardProps) {
         <div className="flex items-center">
           <button 
             className={`mr-4 transition-transform hover:scale-110 ${isLiked ? 'text-red-500' : ''}`}
-            onClick={handleLike}
+            onClick={() => {
+              setIsLiked(!isLiked);
+              setLikesCount(prev => isLiked ? prev - 1 : prev + 1);
+              // Backend sync attempt
+              try {
+                handleLike();
+              } catch (error) {
+                console.error("Couldn't sync like with backend, showing optimistic UI update");
+              }
+            }}
           >
             <Heart className="h-7 w-7" fill={isLiked ? "currentColor" : "none"} />
           </button>
-          <button className="mr-4 transition-transform hover:scale-110">
+          <button 
+            className="mr-4 transition-transform hover:scale-110"
+            onClick={() => {
+              setShowComments(!showComments);
+              const commentInput = document.getElementById(`comment-input-${post.id}`);
+              if (commentInput) {
+                setTimeout(() => commentInput.focus(), 0);
+              }
+            }}
+          >
             <MessageCircle className="h-7 w-7" />
           </button>
-          <button className="transition-transform hover:scale-110">
-            <Send className="h-7 w-7" />
+          <button 
+            className={`transition-transform hover:scale-110 ${isShared ? 'text-primary' : ''}`}
+            onClick={() => {
+              setIsShared(true);
+              setTimeout(() => setIsShared(false), 1000);
+              // Show share animation/feedback here
+              alert("Post shared!"); // Will replace with a toast notification
+            }}
+          >
+            <Send className="h-7 w-7" fill={isShared ? "currentColor" : "none"} />
           </button>
-          <button className="ml-auto transition-transform hover:scale-110">
-            <Bookmark className="h-7 w-7" />
+          <button 
+            className={`ml-auto transition-transform hover:scale-110 ${isBookmarked ? 'text-primary' : ''}`}
+            onClick={() => setIsBookmarked(!isBookmarked)}
+          >
+            <Bookmark className="h-7 w-7" fill={isBookmarked ? "currentColor" : "none"} />
           </button>
         </div>
         
@@ -124,11 +156,30 @@ export default function PostCard({ post }: PostCardProps) {
             <span className="font-bold hover:text-primary transition-colors cursor-pointer">{post.user.username}</span>{' '}
             <span className="text-gray-900 dark:text-gray-200">{post.caption}</span>
           </p>
+          
           {post.commentCount > 0 && (
-            <p className="mt-2 text-sm text-gray-500 dark:text-gray-400 cursor-pointer hover:text-gray-700 dark:hover:text-gray-300 transition-colors">
-              View all {post.commentCount} comments
-            </p>
+            <button 
+              className="mt-2 text-sm text-gray-500 dark:text-gray-400 cursor-pointer hover:text-gray-700 dark:hover:text-gray-300 transition-colors"
+              onClick={() => setShowComments(!showComments)}
+            >
+              {showComments ? "Hide" : "View all"} {post.commentCount} comments
+            </button>
           )}
+          
+          {showComments && (
+            <div className="mt-2 border-t border-gray-100 dark:border-gray-700 pt-2">
+              {/* Sample comments - will replace with actual comments from API */}
+              <div className="text-sm my-2">
+                <span className="font-bold mr-2">jaideep</span>
+                <span className="text-gray-800 dark:text-gray-200">Amazing shot! 📸</span>
+              </div>
+              <div className="text-sm my-2">
+                <span className="font-bold mr-2">shiva</span>
+                <span className="text-gray-800 dark:text-gray-200">This is wonderful!</span>
+              </div>
+            </div>
+          )}
+          
           <p className="mt-2 text-xs text-gray-400 dark:text-gray-500 font-medium">{timeAgo}</p>
         </div>
       </div>
@@ -142,6 +193,7 @@ export default function PostCard({ post }: PostCardProps) {
           <Smile className="h-6 w-6" />
         </button>
         <Input
+          id={`comment-input-${post.id}`}
           type="text"
           placeholder="Add a comment..."
           className="flex-1 bg-transparent border-none focus:outline-none focus:ring-0 text-sm"
@@ -151,7 +203,7 @@ export default function PostCard({ post }: PostCardProps) {
         <Button
           type="submit"
           variant="ghost"
-          className="ml-3 text-primary font-bold text-sm hover:bg-primary/10 transition-colors"
+          className={`ml-3 font-bold text-sm hover:bg-primary/10 transition-colors ${comment.trim() ? 'text-primary' : 'text-primary/50'}`}
           disabled={!comment.trim() || commentMutation.isPending}
         >
           Post
