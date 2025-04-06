@@ -13,6 +13,7 @@ import LogoutModal from "@/components/modals/logout-modal";
 import VoiceIndicator from "@/components/voice-indicator";
 import { useVoiceCommands } from "@/hooks/use-voice-commands";
 import { useQuery } from "@tanstack/react-query";
+import { useLocation } from "wouter";
 
 // Sample posts data for demonstration
 const samplePosts = [
@@ -67,6 +68,7 @@ type ModalState = {
 
 export default function HomePage() {
   const { user } = useAuth();
+  const [_, setLocation] = useLocation();
   const [activeModals, setActiveModals] = useState<ModalState>({
     search: false,
     create: false, 
@@ -102,7 +104,10 @@ export default function HomePage() {
 
   // Setup voice commands
   const voiceCommands = {
-    "home": () => closeAllModals(),
+    "home": () => {
+      closeAllModals();
+      setLocation('/');
+    },
     "search": () => toggleModal("search"),
     "explore": () => console.log("Navigate to explore"),
     "reels": () => console.log("Navigate to reels"),
@@ -153,6 +158,7 @@ export default function HomePage() {
             else if (page === 'notifications') toggleModal('notifications');
             else if (page === 'messages') toggleModal('messages');
             else if (page === 'logout') toggleModal('logout');
+            else if (page === 'home') setLocation('/');
             else console.log(`Navigate to ${page}`);
           }} 
         />
@@ -207,6 +213,7 @@ export default function HomePage() {
       <MobileNav 
         onNavigate={(page) => {
           if (page === 'search') toggleModal('search');
+          else if (page === 'home') setLocation('/');
           else console.log(`Navigate to ${page}`);
         }}
         userImage={user.profileImage || "https://randomuser.me/api/portraits/men/1.jpg"}
