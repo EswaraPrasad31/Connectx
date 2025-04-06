@@ -19,32 +19,56 @@ const storiesData: Story[] = [
   },
   {
     id: 2,
-    username: "sophie",
-    imageUrl: "https://randomuser.me/api/portraits/women/2.jpg",
+    username: "jaideep",
+    imageUrl: "https://randomuser.me/api/portraits/men/42.jpg",
     viewed: false
   },
   {
     id: 3,
-    username: "alex_dev",
-    imageUrl: "https://randomuser.me/api/portraits/men/3.jpg",
+    username: "shiva",
+    imageUrl: "https://randomuser.me/api/portraits/men/33.jpg",
     viewed: false
   },
   {
     id: 4,
-    username: "maria_p",
-    imageUrl: "https://randomuser.me/api/portraits/women/4.jpg",
+    username: "abhiram",
+    imageUrl: "https://randomuser.me/api/portraits/men/23.jpg",
     viewed: false
   },
   {
     id: 5,
-    username: "james_t",
-    imageUrl: "https://randomuser.me/api/portraits/men/5.jpg",
+    username: "sarfraz",
+    imageUrl: "https://randomuser.me/api/portraits/men/45.jpg",
     viewed: false
   },
   {
     id: 6,
-    username: "olivia",
-    imageUrl: "https://randomuser.me/api/portraits/women/6.jpg",
+    username: "maharshith",
+    imageUrl: "https://randomuser.me/api/portraits/men/36.jpg",
+    viewed: false
+  },
+  {
+    id: 7,
+    username: "anjali",
+    imageUrl: "https://randomuser.me/api/portraits/women/28.jpg",
+    viewed: false
+  },
+  {
+    id: 8,
+    username: "priya",
+    imageUrl: "https://randomuser.me/api/portraits/women/39.jpg",
+    viewed: false
+  },
+  {
+    id: 9,
+    username: "divya",
+    imageUrl: "https://randomuser.me/api/portraits/women/42.jpg",
+    viewed: true
+  },
+  {
+    id: 10,
+    username: "meera",
+    imageUrl: "https://randomuser.me/api/portraits/women/17.jpg",
     viewed: true
   }
 ];

@@ -14,6 +14,49 @@ import VoiceIndicator from "@/components/voice-indicator";
 import { useVoiceCommands } from "@/hooks/use-voice-commands";
 import { useQuery } from "@tanstack/react-query";
 
+// Sample posts data for demonstration
+const samplePosts = [
+  {
+    id: 1,
+    imageUrl: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8cmVzdGF1cmFudHxlbnwwfHwwfHx8MA%3D%3D",
+    caption: "Amazing dinner at this new restaurant! The food was incredible 🍽️ #foodie #weekend",
+    createdAt: "2025-04-06T12:30:00.000Z",
+    likeCount: 142,
+    commentCount: 23,
+    user: {
+      id: 2,
+      username: "jaideep",
+      profileImage: "https://randomuser.me/api/portraits/men/42.jpg"
+    }
+  },
+  {
+    id: 2,
+    imageUrl: "https://images.unsplash.com/photo-1569317002804-ab77bcf1bce4?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8dGVjaCUyMGdhZGdldHxlbnwwfHwwfHx8MA%3D%3D",
+    caption: "Just got the newest gadget! Can't wait to try it out. #tech #innovation",
+    createdAt: "2025-04-06T09:15:00.000Z",
+    likeCount: 89,
+    commentCount: 12,
+    user: {
+      id: 3,
+      username: "shiva",
+      profileImage: "https://randomuser.me/api/portraits/men/33.jpg"
+    }
+  },
+  {
+    id: 3,
+    imageUrl: "https://images.unsplash.com/photo-1540979388789-6cee28a1cdc9?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTR8fGluZGlhbiUyMGNpdHl8ZW58MHx8MHx8fDA%3D",
+    caption: "Beautiful sunset in the city today! 🌇 #citylife #sunset #views",
+    createdAt: "2025-04-05T18:45:00.000Z",
+    likeCount: 321,
+    commentCount: 42,
+    user: {
+      id: 7,
+      username: "anjali",
+      profileImage: "https://randomuser.me/api/portraits/women/28.jpg"
+    }
+  }
+];
+
 type ModalState = {
   search: boolean;
   create: boolean;
@@ -33,9 +76,12 @@ export default function HomePage() {
   });
 
   // Fetch posts for the feed
-  const { data: posts = [], isLoading: isLoadingPosts } = useQuery<any[]>({
+  const { data: apiPosts = [], isLoading: isLoadingPosts } = useQuery<any[]>({
     queryKey: ["/api/posts"],
   });
+  
+  // Use sample posts if no posts are returned from the API
+  const posts = apiPosts.length > 0 ? apiPosts : samplePosts;
 
   const toggleModal = (modal: keyof ModalState) => {
     setActiveModals(prev => ({
