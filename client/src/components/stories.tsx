@@ -8,7 +8,7 @@ type Story = {
   isCurrentUser?: boolean;
 };
 
-// Sample story data
+// Sample story data with default profile image
 const storiesData: Story[] = [
   {
     id: 1,
@@ -20,55 +20,55 @@ const storiesData: Story[] = [
   {
     id: 2,
     username: "jaideep",
-    imageUrl: "https://randomuser.me/api/portraits/men/82.jpg",
+    imageUrl: "/images/default-profile.svg",
     viewed: false
   },
   {
     id: 3,
     username: "shiva",
-    imageUrl: "https://randomuser.me/api/portraits/men/83.jpg",
+    imageUrl: "/images/default-profile.svg",
     viewed: false
   },
   {
     id: 4,
     username: "abhiram",
-    imageUrl: "https://randomuser.me/api/portraits/men/84.jpg",
+    imageUrl: "/images/default-profile.svg",
     viewed: false
   },
   {
     id: 5,
     username: "sarfraz",
-    imageUrl: "https://randomuser.me/api/portraits/men/85.jpg",
+    imageUrl: "/images/default-profile.svg",
     viewed: false
   },
   {
     id: 6,
     username: "maharshith",
-    imageUrl: "https://randomuser.me/api/portraits/men/86.jpg",
+    imageUrl: "/images/default-profile.svg",
     viewed: false
   },
   {
     id: 7,
     username: "anjali",
-    imageUrl: "https://randomuser.me/api/portraits/women/82.jpg",
+    imageUrl: "/images/default-profile.svg",
     viewed: false
   },
   {
     id: 8,
     username: "priya",
-    imageUrl: "https://randomuser.me/api/portraits/women/83.jpg",
+    imageUrl: "/images/default-profile.svg",
     viewed: false
   },
   {
     id: 9,
     username: "divya",
-    imageUrl: "https://randomuser.me/api/portraits/women/84.jpg",
+    imageUrl: "/images/default-profile.svg",
     viewed: true
   },
   {
     id: 10,
     username: "meera",
-    imageUrl: "https://randomuser.me/api/portraits/women/85.jpg",
+    imageUrl: "/images/default-profile.svg",
     viewed: true
   }
 ];

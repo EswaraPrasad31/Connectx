@@ -101,7 +101,12 @@ export default function PostCard({ post }: PostCardProps) {
       {/* Post Header */}
       <div className="flex items-center p-4">
         <Avatar className="h-10 w-10 ring-2 ring-primary/20 border-2 border-white dark:border-gray-900">
-          <AvatarImage src={post.user.profileImage} alt={`${post.user.username}'s profile`} />
+          <AvatarImage 
+            src={post.user.username === user?.username 
+              ? (user.profileImage || "https://randomuser.me/api/portraits/men/1.jpg") 
+              : "/images/default-profile.svg"} 
+            alt={`${post.user.username}'s profile`} 
+          />
           <AvatarFallback className="bg-gradient-to-br from-blue-400 to-indigo-600 text-white font-bold">{post.user.username.charAt(0).toUpperCase()}</AvatarFallback>
         </Avatar>
         <div className="ml-3">

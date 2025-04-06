@@ -14,40 +14,40 @@ type MessagesModalProps = {
   onClose: () => void;
 };
 
-// Sample conversations data with names from stories section and consistent profile images
+// Sample conversations data with names from stories section and default profile image
 const conversationsData = [
   {
     id: 1,
     username: "jaideep",
-    profileImage: "https://randomuser.me/api/portraits/men/82.jpg",
+    profileImage: "/images/default-profile.svg",
     status: "Active now",
     isSelected: false
   },
   {
     id: 2,
     username: "shiva",
-    profileImage: "https://randomuser.me/api/portraits/men/83.jpg",
+    profileImage: "/images/default-profile.svg",
     status: "Sent you a message • 2h",
     isSelected: true
   },
   {
     id: 3,
     username: "abhiram",
-    profileImage: "https://randomuser.me/api/portraits/men/84.jpg",
+    profileImage: "/images/default-profile.svg",
     status: "Active 5h ago",
     isSelected: false
   },
   {
     id: 4,
     username: "sarfraz",
-    profileImage: "https://randomuser.me/api/portraits/men/85.jpg",
+    profileImage: "/images/default-profile.svg",
     status: "Sent you a post • 1d",
     isSelected: false
   },
   {
     id: 5,
     username: "maharshith",
-    profileImage: "https://randomuser.me/api/portraits/men/86.jpg",
+    profileImage: "/images/default-profile.svg",
     status: "Seen 3h ago",
     isSelected: false
   }

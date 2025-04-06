@@ -7,34 +7,34 @@ type SuggestionsProps = {
   user: Omit<User, 'password'>;
 };
 
-// Sample suggestion data with Indian names
+// Sample suggestion data with Indian names and default profile image
 const suggestionsData = [
   {
     id: 1,
     username: "arjun_dev",
     fullName: "Arjun Sharma",
-    profileImage: "https://randomuser.me/api/portraits/men/22.jpg",
+    profileImage: "/images/default-profile.svg",
     reason: "New to ConnectX"
   },
   {
     id: 2,
     username: "priya_designs",
     fullName: "Priya Patel",
-    profileImage: "https://randomuser.me/api/portraits/women/33.jpg",
+    profileImage: "/images/default-profile.svg",
     reason: "Follows you"
   },
   {
     id: 3,
     username: "vikram_tech",
     fullName: "Vikram Singh",
-    profileImage: "https://randomuser.me/api/portraits/men/44.jpg",
+    profileImage: "/images/default-profile.svg",
     reason: "Suggested for you"
   },
   {
     id: 4,
     username: "neha_photo",
     fullName: "Neha Gupta",
-    profileImage: "https://randomuser.me/api/portraits/women/55.jpg",
+    profileImage: "/images/default-profile.svg",
     reason: "Followed by jaideep"
   }
 ];
