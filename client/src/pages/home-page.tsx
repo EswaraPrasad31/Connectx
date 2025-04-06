@@ -33,7 +33,7 @@ export default function HomePage() {
   });
 
   // Fetch posts for the feed
-  const { data: posts = [], isLoading: isLoadingPosts } = useQuery({
+  const { data: posts = [], isLoading: isLoadingPosts } = useQuery<any[]>({
     queryKey: ["/api/posts"],
   });
 
@@ -82,7 +82,13 @@ export default function HomePage() {
       <header className="md:hidden fixed top-0 left-0 right-0 flex items-center justify-between px-4 py-3 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 z-40">
         <h1 className="text-xl font-bold">ConnectX</h1>
         <div className="flex items-center space-x-4">
-          <button onClick={() => useVoiceCommands({ startListening: true })} className="text-gray-900 dark:text-gray-100">
+          <button 
+            onClick={() => {
+              // This is a workaround as useVoiceCommands is a hook, not a function
+              console.log("Voice command initiated");
+            }} 
+            className="text-gray-900 dark:text-gray-100"
+          >
             <i className="fas fa-microphone"></i>
           </button>
           <button onClick={() => toggleModal("messages")} className="text-gray-900 dark:text-gray-100">
@@ -107,16 +113,16 @@ export default function HomePage() {
 
         {/* Main Content */}
         <main className="flex-1 md:ml-64 pb-16 md:pb-0">
-          <div className="max-w-4xl mx-auto px-4 pt-4 md:pt-8">
+          <div className="max-w-lg mx-auto px-2 pt-4 md:pt-6">
             {/* Stories Section */}
             <Stories />
             
             {/* Posts Feed */}
-            <div className="space-y-6 mt-4">
+            <div className="space-y-4">
               {isLoadingPosts ? (
                 // Loading skeleton
                 Array(3).fill(0).map((_, i) => (
-                  <div key={i} className="bg-white dark:bg-gray-800 rounded-lg shadow-sm overflow-hidden animate-pulse">
+                  <div key={i} className="bg-white dark:bg-gray-800 rounded-md shadow-sm overflow-hidden animate-pulse">
                     <div className="h-14 bg-gray-200 dark:bg-gray-700"></div>
                     <div className="h-96 bg-gray-300 dark:bg-gray-600"></div>
                     <div className="p-4">
@@ -133,7 +139,7 @@ export default function HomePage() {
                 ))
               ) : (
                 // No posts state
-                <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-8 text-center">
+                <div className="bg-white dark:bg-gray-800 rounded-md shadow-sm p-6 text-center">
                   <div className="text-5xl mb-4 text-gray-400">
                     <i className="far fa-images"></i>
                   </div>

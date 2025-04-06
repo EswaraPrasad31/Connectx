@@ -65,21 +65,21 @@ export default function Stories() {
   };
 
   return (
-    <div className="overflow-x-auto bg-white dark:bg-gray-800 rounded-xl p-5 mb-6 shadow-md transition-colors duration-300 border border-gray-100 dark:border-gray-700">
-      <div className="flex space-x-5">
+    <div className="overflow-x-auto bg-white dark:bg-gray-800 rounded-lg p-3 mb-4 shadow-sm transition-colors duration-300 border border-gray-100 dark:border-gray-700">
+      <div className="flex space-x-3">
         {stories.map((story) => (
           <div 
             key={story.id}
-            className="flex flex-col items-center space-y-2 flex-shrink-0"
+            className="flex flex-col items-center space-y-1 flex-shrink-0"
             onClick={() => handleStoryClick(story.id)}
           >
-            <div className={`w-18 h-18 rounded-full ${
+            <div className={`w-14 h-14 rounded-full ${
               story.viewed 
                 ? 'bg-gradient-to-r from-gray-200 to-gray-400 dark:from-gray-700 dark:to-gray-600' 
                 : story.isCurrentUser
                   ? 'bg-gradient-to-r from-blue-500 to-purple-600'
                   : 'bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500'
-            } p-[2px] cursor-pointer transition-all hover:scale-110 duration-200 shadow-md`}>
+            } p-[2px] cursor-pointer transition-all hover:scale-105 duration-200`}>
               <div className="bg-white dark:bg-gray-800 rounded-full p-[2px] h-full w-full flex items-center justify-center">
                 <img 
                   src={story.imageUrl} 
@@ -87,13 +87,13 @@ export default function Stories() {
                   className="w-full h-full object-cover rounded-full"
                 />
                 {story.isCurrentUser && (
-                  <div className="absolute bottom-0 right-0 bg-primary text-white rounded-full w-5 h-5 flex items-center justify-center text-xs shadow-md border-2 border-white dark:border-gray-800">
+                  <div className="absolute bottom-0 right-0 bg-primary text-white rounded-full w-4 h-4 flex items-center justify-center text-xs border-2 border-white dark:border-gray-800">
                     +
                   </div>
                 )}
               </div>
             </div>
-            <span className={`text-xs font-medium truncate w-16 text-center ${story.isCurrentUser ? 'text-primary' : ''}`}>
+            <span className={`text-xs font-medium truncate w-14 text-center ${story.isCurrentUser ? 'text-primary' : ''}`}>
               {story.username}
             </span>
           </div>
