@@ -7,35 +7,35 @@ type SuggestionsProps = {
   user: Omit<User, 'password'>;
 };
 
-// Sample suggestion data
+// Sample suggestion data with Indian names
 const suggestionsData = [
   {
     id: 1,
-    username: "michael_j",
-    fullName: "Michael Johnson",
+    username: "arjun_dev",
+    fullName: "Arjun Sharma",
     profileImage: "https://randomuser.me/api/portraits/men/22.jpg",
     reason: "New to ConnectX"
   },
   {
     id: 2,
-    username: "robert_tech",
-    fullName: "Robert Williams",
-    profileImage: "https://randomuser.me/api/portraits/men/33.jpg",
+    username: "priya_designs",
+    fullName: "Priya Patel",
+    profileImage: "https://randomuser.me/api/portraits/women/33.jpg",
     reason: "Follows you"
   },
   {
     id: 3,
-    username: "emma_designs",
-    fullName: "Emma Roberts",
-    profileImage: "https://randomuser.me/api/portraits/women/44.jpg",
+    username: "vikram_tech",
+    fullName: "Vikram Singh",
+    profileImage: "https://randomuser.me/api/portraits/men/44.jpg",
     reason: "Suggested for you"
   },
   {
     id: 4,
-    username: "david_photo",
-    fullName: "David Miller",
-    profileImage: "https://randomuser.me/api/portraits/men/55.jpg",
-    reason: "Followed by maria_p"
+    username: "neha_photo",
+    fullName: "Neha Gupta",
+    profileImage: "https://randomuser.me/api/portraits/women/55.jpg",
+    reason: "Followed by jaideep"
   }
 ];
 

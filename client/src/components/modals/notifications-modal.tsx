@@ -15,29 +15,43 @@ type NotificationsModalProps = {
   onClose: () => void;
 };
 
-// Sample notification data
+// Sample notification data with Indian names
 const notificationsData = [
   {
     id: 1,
-    username: "sophie",
-    profileImage: "https://randomuser.me/api/portraits/women/2.jpg",
+    username: "jaideep",
+    profileImage: "https://randomuser.me/api/portraits/men/32.jpg",
     action: "liked your photo",
     timeAgo: "2h"
   },
   {
     id: 2,
-    username: "alex_dev",
-    profileImage: "https://randomuser.me/api/portraits/men/3.jpg",
+    username: "shiva",
+    profileImage: "https://randomuser.me/api/portraits/men/43.jpg",
     action: "started following you",
     timeAgo: "1d",
     showFollowButton: true
   },
   {
     id: 3,
-    username: "maria_p",
-    profileImage: "https://randomuser.me/api/portraits/women/4.jpg",
+    username: "abhiram",
+    profileImage: "https://randomuser.me/api/portraits/men/64.jpg",
     action: "mentioned you in a comment",
     timeAgo: "3d"
+  },
+  {
+    id: 4,
+    username: "sarfraz",
+    profileImage: "https://randomuser.me/api/portraits/men/75.jpg",
+    action: "liked your story",
+    timeAgo: "4d"
+  },
+  {
+    id: 5,
+    username: "maharshith",
+    profileImage: "https://randomuser.me/api/portraits/men/86.jpg",
+    action: "commented on your post",
+    timeAgo: "5d"
   }
 ];
 

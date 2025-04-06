@@ -53,13 +53,13 @@ const conversationsData = [
   }
 ];
 
-// Sample messages data
+// Sample messages data - matching the screenshot conversation
 const messagesData = [
   {
     id: 1,
     senderId: 2, // shiva
     text: "Hey! How's your project coming along?",
-    timestamp: new Date(Date.now() - 3600000 * 3), // 3 hours ago
+    timestamp: new Date(Date.now() - 3600000 * 4), // 4 hours ago
     isSentByCurrentUser: false
   },
   {
@@ -73,14 +73,14 @@ const messagesData = [
     id: 3,
     senderId: 2, // shiva
     text: "That sounds awesome! Can you show me a demo sometime?",
-    timestamp: new Date(Date.now() - 3600000), // 1 hour ago
+    timestamp: new Date(Date.now() - 1800000 * 2), // 1 hour ago
     isSentByCurrentUser: false
   },
   {
     id: 4,
     senderId: 1, // current user
     text: "Definitely! How about tomorrow?",
-    timestamp: new Date(Date.now() - 1800000), // 30 minutes ago
+    timestamp: new Date(Date.now() - 300000), // 5 minutes ago
     isSentByCurrentUser: true
   }
 ];
