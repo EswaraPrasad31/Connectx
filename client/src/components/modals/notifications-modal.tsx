@@ -55,13 +55,8 @@ export default function NotificationsModal({ isOpen, onClose }: NotificationsMod
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-md">
-        <DialogHeader className="flex flex-row items-center justify-between">
+        <DialogHeader>
           <DialogTitle>Notifications</DialogTitle>
-          <DialogClose asChild>
-            <button className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300">
-              <X className="h-4 w-4" />
-            </button>
-          </DialogClose>
         </DialogHeader>
         
         <div className="p-4 max-h-96 overflow-y-auto">

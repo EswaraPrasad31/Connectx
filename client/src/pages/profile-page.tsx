@@ -13,24 +13,6 @@ import { useLocation } from 'wouter';
 // Sample user posts for display
 const userPosts = [
   {
-    id: 1,
-    imageUrl: "https://images.unsplash.com/photo-1693821217167-3a072ee7e9d3?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTR8fG1vZGVybiUyMGNvZGluZ3xlbnwwfHwwfHx8MA%3D%3D",
-    likes: 56,
-    comments: 7
-  },
-  {
-    id: 2,
-    imageUrl: "https://images.unsplash.com/photo-1531482615713-2afd69097998?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8Y2FtcHVzfGVufDB8fDB8fHww",
-    likes: 124,
-    comments: 18
-  },
-  {
-    id: 3,
-    imageUrl: "https://images.unsplash.com/photo-1540979388789-6cee28a1cdc9?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTR8fGluZGlhbiUyMGNpdHl8ZW58MHx8MHx8fDA%3D",
-    likes: 87,
-    comments: 9
-  },
-  {
     id: 4,
     imageUrl: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8cmVzdGF1cmFudHxlbnwwfHwwfHx8MA%3D%3D",
     likes: 215,
@@ -52,7 +34,7 @@ const userPosts = [
 
 // User stats
 const userStats = {
-  posts: 6,
+  posts: 3,
   followers: 845,
   following: 312
 };

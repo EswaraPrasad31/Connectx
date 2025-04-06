@@ -89,13 +89,8 @@ export default function CreatePostModal({ isOpen, onClose }: CreatePostModalProp
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-lg">
-        <DialogHeader className="flex flex-row items-center justify-between">
+        <DialogHeader>
           <DialogTitle>Create new post</DialogTitle>
-          <DialogClose asChild>
-            <button className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300">
-              <X className="h-4 w-4" />
-            </button>
-          </DialogClose>
         </DialogHeader>
         
         <div className="p-6">
