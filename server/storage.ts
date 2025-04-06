@@ -1,10 +1,26 @@
 import { 
-  User, InsertUser, Post, InsertPost, 
-  Like, InsertLike, Comment, InsertComment, 
-  Follow, InsertFollow 
+  users, posts, likes, comments, follows,
+  insertUserSchema, insertPostSchema, insertLikeSchema, insertCommentSchema, insertFollowSchema
 } from "@shared/schema";
-import createMemoryStore from "memorystore";
+import { z } from "zod";
+import { eq, and, sql } from "drizzle-orm";
+import { db, pool } from "./db";
 import session from "express-session";
+import connectPg from "connect-pg-simple";
+
+// Define our insert types from the schemas
+type InsertUser = z.infer<typeof insertUserSchema>;
+type InsertPost = z.infer<typeof insertPostSchema>;
+type InsertLike = z.infer<typeof insertLikeSchema>;
+type InsertComment = z.infer<typeof insertCommentSchema>;
+type InsertFollow = z.infer<typeof insertFollowSchema>;
+
+// Use the inferred types from the schema
+type User = typeof users.$inferSelect;
+type Post = typeof posts.$inferSelect;
+type Like = typeof likes.$inferSelect;
+type Comment = typeof comments.$inferSelect;
+type Follow = typeof follows.$inferSelect;
 
 // Extend the interface with our CRUD methods
 export interface IStorage {
@@ -34,219 +50,147 @@ export interface IStorage {
   removeFollow(followerId: number, followingId: number): Promise<void>;
   
   // Session store
-  sessionStore: session.SessionStore;
+  sessionStore: any; // Using any to avoid type issues with session store
 }
 
-export class MemStorage implements IStorage {
-  private users: Map<number, User>;
-  private posts: Map<number, Post>;
-  private likes: Map<number, Like>;
-  private comments: Map<number, Comment>;
-  private follows: Map<number, Follow>;
-  sessionStore: session.SessionStore;
-  
-  private userIdCounter: number;
-  private postIdCounter: number;
-  private likeIdCounter: number;
-  private commentIdCounter: number;
-  private followIdCounter: number;
+export class DatabaseStorage implements IStorage {
+  sessionStore: any;
 
   constructor() {
-    this.users = new Map();
-    this.posts = new Map();
-    this.likes = new Map();
-    this.comments = new Map();
-    this.follows = new Map();
-    
-    this.userIdCounter = 1;
-    this.postIdCounter = 1;
-    this.likeIdCounter = 1;
-    this.commentIdCounter = 1;
-    this.followIdCounter = 1;
-    
-    const MemoryStore = createMemoryStore(session);
-    this.sessionStore = new MemoryStore({
-      checkPeriod: 86400000 // prune expired entries every 24h
+    const PostgresSessionStore = connectPg(session);
+    this.sessionStore = new PostgresSessionStore({
+      pool,
+      tableName: "session", 
+      createTableIfMissing: true
     });
-    
-    // Add some sample users
-    this.seedData();
-  }
-
-  private seedData() {
-    // This will be overwritten by actual user registration
-    // The seed data provides some structure for the initial UI state
-    const demoUsers = [
-      {
-        username: "user",
-        email: "user@example.com",
-        password: "password", // In real app, this would be hashed
-        fullName: "Demo User",
-        profileImage: "https://randomuser.me/api/portraits/men/1.jpg",
-        bio: "Welcome to ConnectX!"
-      }
-    ];
   }
 
   // User methods
   async getUser(id: number): Promise<User | undefined> {
-    return this.users.get(id);
+    const [user] = await db.select().from(users).where(eq(users.id, id));
+    return user;
   }
 
   async getUserByUsername(username: string): Promise<User | undefined> {
-    return Array.from(this.users.values()).find(
-      (user) => user.username.toLowerCase() === username.toLowerCase()
-    );
+    const [user] = await db.select().from(users).where(eq(users.username, username));
+    return user;
   }
 
   async getUserByEmail(email: string): Promise<User | undefined> {
-    return Array.from(this.users.values()).find(
-      (user) => user.email.toLowerCase() === email.toLowerCase()
-    );
+    const [user] = await db.select().from(users).where(eq(users.email, email));
+    return user;
   }
 
   async createUser(insertUser: InsertUser): Promise<User> {
-    const id = this.userIdCounter++;
-    const now = new Date();
-    const user: User = {
-      ...insertUser,
-      id,
-      createdAt: now
-    };
-    this.users.set(id, user);
+    const [user] = await db.insert(users).values(insertUser).returning();
     return user;
   }
 
   // Post methods
   async getPosts(): Promise<(Post & { user: User, likeCount: number, commentCount: number })[]> {
-    const posts = Array.from(this.posts.values());
-    
-    return posts.map(post => {
-      const user = this.users.get(post.userId);
-      if (!user) throw new Error(`User not found for post ${post.id}`);
-      
-      const postLikes = Array.from(this.likes.values()).filter(
-        like => like.postId === post.id
-      );
-      
-      const postComments = Array.from(this.comments.values()).filter(
-        comment => comment.postId === post.id
-      );
-      
-      return {
-        ...post,
-        user,
-        likeCount: postLikes.length,
-        commentCount: postComments.length
-      };
-    })
-    .sort((a, b) => {
-      const dateA = a.createdAt?.getTime() || 0;
-      const dateB = b.createdAt?.getTime() || 0;
-      return dateB - dateA; // Newest first
+    const result = await db.query.posts.findMany({
+      with: {
+        user: true,
+      },
+      orderBy: (posts, { desc }) => [desc(posts.createdAt)]
     });
+
+    const postsWithCounts = await Promise.all(
+      result.map(async (post) => {
+        const likeCount = await db.select({ count: sql`count(*)` })
+          .from(likes)
+          .where(eq(likes.postId, post.id));
+        
+        const commentCount = await db.select({ count: sql`count(*)` })
+          .from(comments)
+          .where(eq(comments.postId, post.id));
+
+        return {
+          ...post,
+          likeCount: Number(likeCount[0]?.count || 0),
+          commentCount: Number(commentCount[0]?.count || 0)
+        };
+      })
+    );
+    
+    return postsWithCounts;
   }
 
   async getPostById(id: number): Promise<Post | undefined> {
-    return this.posts.get(id);
+    const [post] = await db.select().from(posts).where(eq(posts.id, id));
+    return post;
   }
 
   async createPost(insertPost: InsertPost): Promise<Post> {
-    const id = this.postIdCounter++;
-    const now = new Date();
-    const post: Post = {
-      ...insertPost,
-      id,
-      createdAt: now
-    };
-    this.posts.set(id, post);
+    const [post] = await db.insert(posts).values(insertPost).returning();
     return post;
   }
 
   // Like methods
   async getLike(userId: number, postId: number): Promise<Like | undefined> {
-    return Array.from(this.likes.values()).find(
-      like => like.userId === userId && like.postId === postId
-    );
+    const [like] = await db.select()
+      .from(likes)
+      .where(and(
+        eq(likes.userId, userId),
+        eq(likes.postId, postId)
+      ));
+    return like;
   }
 
   async createLike(insertLike: InsertLike): Promise<Like> {
-    const id = this.likeIdCounter++;
-    const now = new Date();
-    const like: Like = {
-      ...insertLike,
-      id,
-      createdAt: now
-    };
-    this.likes.set(id, like);
+    const [like] = await db.insert(likes).values(insertLike).returning();
     return like;
   }
 
   async removeLike(userId: number, postId: number): Promise<void> {
-    const like = await this.getLike(userId, postId);
-    if (like) {
-      this.likes.delete(like.id);
-    }
+    await db.delete(likes)
+      .where(and(
+        eq(likes.userId, userId),
+        eq(likes.postId, postId)
+      ));
   }
 
   // Comment methods
   async getCommentsByPostId(postId: number): Promise<(Comment & { user: User })[]> {
-    const comments = Array.from(this.comments.values())
-      .filter(comment => comment.postId === postId)
-      .sort((a, b) => {
-        const dateA = a.createdAt?.getTime() || 0;
-        const dateB = b.createdAt?.getTime() || 0;
-        return dateB - dateA; // Newest first
-      });
-    
-    return comments.map(comment => {
-      const user = this.users.get(comment.userId);
-      if (!user) throw new Error(`User not found for comment ${comment.id}`);
-      
-      return {
-        ...comment,
-        user
-      };
+    const result = await db.query.comments.findMany({
+      where: eq(comments.postId, postId),
+      with: {
+        user: true
+      },
+      orderBy: (comments, { desc }) => [desc(comments.createdAt)]
     });
+    
+    return result;
   }
 
   async createComment(insertComment: InsertComment): Promise<Comment> {
-    const id = this.commentIdCounter++;
-    const now = new Date();
-    const comment: Comment = {
-      ...insertComment,
-      id,
-      createdAt: now
-    };
-    this.comments.set(id, comment);
+    const [comment] = await db.insert(comments).values(insertComment).returning();
     return comment;
   }
 
   // Follow methods
   async getFollow(followerId: number, followingId: number): Promise<Follow | undefined> {
-    return Array.from(this.follows.values()).find(
-      follow => follow.followerId === followerId && follow.followingId === followingId
-    );
+    const [follow] = await db.select()
+      .from(follows)
+      .where(and(
+        eq(follows.followerId, followerId),
+        eq(follows.followingId, followingId)
+      ));
+    return follow;
   }
 
   async createFollow(insertFollow: InsertFollow): Promise<Follow> {
-    const id = this.followIdCounter++;
-    const now = new Date();
-    const follow: Follow = {
-      ...insertFollow,
-      id,
-      createdAt: now
-    };
-    this.follows.set(id, follow);
+    const [follow] = await db.insert(follows).values(insertFollow).returning();
     return follow;
   }
 
   async removeFollow(followerId: number, followingId: number): Promise<void> {
-    const follow = await this.getFollow(followerId, followingId);
-    if (follow) {
-      this.follows.delete(follow.id);
-    }
+    await db.delete(follows)
+      .where(and(
+        eq(follows.followerId, followerId),
+        eq(follows.followingId, followingId)
+      ));
   }
 }
 
-export const storage = new MemStorage();
+export const storage = new DatabaseStorage();

@@ -12,7 +12,7 @@ import { useTheme } from "@/hooks/use-theme";
 import { Redirect } from "wouter";
 
 const loginSchema = z.object({
-  email: z.string().email("Invalid email address"),
+  username: z.string().min(3, "Username must be at least 3 characters"),
   password: z.string().min(6, "Password must be at least 6 characters"),
 });
 
@@ -34,7 +34,7 @@ export default function AuthPage() {
   const loginForm = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
-      email: "",
+      username: "",
       password: "",
     },
   });
@@ -81,16 +81,16 @@ export default function AuthPage() {
               <form onSubmit={loginForm.handleSubmit(onLoginSubmit)} className="space-y-4">
                 <FormField
                   control={loginForm.control}
-                  name="email"
+                  name="username"
                   render={({ field }) => (
                     <FormItem>
                       <div className="relative">
                         <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500 dark:text-gray-400">
-                          <i className="fas fa-envelope"></i>
+                          <i className="fas fa-user"></i>
                         </span>
                         <FormControl>
                           <Input 
-                            placeholder="Email address" 
+                            placeholder="Username" 
                             className="w-full py-3 pl-10 pr-3" 
                             {...field} 
                           />
