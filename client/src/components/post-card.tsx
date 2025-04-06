@@ -73,27 +73,28 @@ export default function PostCard({ post }: PostCardProps) {
   };
 
   return (
-    <article className="bg-white dark:bg-gray-800 rounded-lg shadow-sm overflow-hidden transition-colors duration-300">
+    <article className="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden transition-colors duration-300 border border-gray-100 dark:border-gray-700">
       {/* Post Header */}
       <div className="flex items-center p-4">
-        <Avatar className="h-8 w-8">
+        <Avatar className="h-10 w-10 ring-2 ring-primary/20 border-2 border-white dark:border-gray-900">
           <AvatarImage src={post.user.profileImage} alt={`${post.user.username}'s profile`} />
-          <AvatarFallback>{post.user.username.charAt(0).toUpperCase()}</AvatarFallback>
+          <AvatarFallback className="bg-gradient-to-br from-blue-400 to-indigo-600 text-white font-bold">{post.user.username.charAt(0).toUpperCase()}</AvatarFallback>
         </Avatar>
         <div className="ml-3">
-          <span className="font-semibold text-sm">{post.user.username}</span>
+          <span className="font-bold text-sm hover:text-primary transition-colors cursor-pointer">{post.user.username}</span>
+          <p className="text-xs text-gray-500 dark:text-gray-400">Original poster</p>
         </div>
-        <button className="ml-auto text-gray-500 dark:text-gray-400">
+        <button className="ml-auto text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 p-2 rounded-full transition-colors">
           <MoreHorizontal className="h-5 w-5" />
         </button>
       </div>
       
       {/* Post Image */}
-      <div className="aspect-w-4 aspect-h-5 bg-gray-100 dark:bg-gray-900">
+      <div className="aspect-w-4 aspect-h-5 bg-gray-100 dark:bg-gray-900 relative overflow-hidden">
         <img 
           src={post.imageUrl} 
           alt="Post content" 
-          className="w-full h-full object-cover"
+          className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
         />
       </div>
       
@@ -101,32 +102,34 @@ export default function PostCard({ post }: PostCardProps) {
       <div className="p-4">
         <div className="flex items-center">
           <button 
-            className={`text-2xl mr-4 transition-colors ${isLiked ? 'text-red-500' : ''}`}
+            className={`mr-4 transition-transform hover:scale-110 ${isLiked ? 'text-red-500' : ''}`}
             onClick={handleLike}
           >
-            <Heart className="h-6 w-6" fill={isLiked ? "currentColor" : "none"} />
+            <Heart className="h-7 w-7" fill={isLiked ? "currentColor" : "none"} />
           </button>
-          <button className="text-2xl mr-4">
-            <MessageCircle className="h-6 w-6" />
+          <button className="mr-4 transition-transform hover:scale-110">
+            <MessageCircle className="h-7 w-7" />
           </button>
-          <button className="text-2xl">
-            <Send className="h-6 w-6" />
+          <button className="transition-transform hover:scale-110">
+            <Send className="h-7 w-7" />
           </button>
-          <button className="ml-auto text-2xl">
-            <Bookmark className="h-6 w-6" />
+          <button className="ml-auto transition-transform hover:scale-110">
+            <Bookmark className="h-7 w-7" />
           </button>
         </div>
         
-        <div className="mt-2">
-          <p className="font-semibold text-sm">{likesCount} likes</p>
-          <p className="mt-1 text-sm">
-            <span className="font-semibold">{post.user.username}</span> {' '}
-            <span>{post.caption}</span>
+        <div className="mt-3">
+          <p className="font-bold text-sm">{likesCount.toLocaleString()} likes</p>
+          <p className="mt-2 text-sm leading-snug">
+            <span className="font-bold hover:text-primary transition-colors cursor-pointer">{post.user.username}</span>{' '}
+            <span className="text-gray-900 dark:text-gray-200">{post.caption}</span>
           </p>
           {post.commentCount > 0 && (
-            <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">View all {post.commentCount} comments</p>
+            <p className="mt-2 text-sm text-gray-500 dark:text-gray-400 cursor-pointer hover:text-gray-700 dark:hover:text-gray-300 transition-colors">
+              View all {post.commentCount} comments
+            </p>
           )}
-          <p className="mt-1 text-xs text-gray-400 dark:text-gray-500">{timeAgo}</p>
+          <p className="mt-2 text-xs text-gray-400 dark:text-gray-500 font-medium">{timeAgo}</p>
         </div>
       </div>
       
@@ -135,20 +138,20 @@ export default function PostCard({ post }: PostCardProps) {
         onSubmit={handleComment}
         className="px-4 py-3 border-t border-gray-200 dark:border-gray-700 flex items-center"
       >
-        <button type="button" className="text-xl mr-3">
-          <Smile className="h-6 w-6 text-gray-500 dark:text-gray-400" />
+        <button type="button" className="mr-3 text-gray-500 dark:text-gray-400 hover:text-primary transition-colors">
+          <Smile className="h-6 w-6" />
         </button>
         <Input
           type="text"
           placeholder="Add a comment..."
-          className="flex-1 bg-transparent border-none focus:outline-none text-sm"
+          className="flex-1 bg-transparent border-none focus:outline-none focus:ring-0 text-sm"
           value={comment}
           onChange={(e) => setComment(e.target.value)}
         />
         <Button
           type="submit"
           variant="ghost"
-          className="ml-3 text-primary font-semibold text-sm"
+          className="ml-3 text-primary font-bold text-sm hover:bg-primary/10 transition-colors"
           disabled={!comment.trim() || commentMutation.isPending}
         >
           Post

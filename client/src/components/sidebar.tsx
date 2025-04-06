@@ -35,7 +35,7 @@ export default function Sidebar({ onNavigate }: SidebarProps) {
   return (
     <aside className="hidden md:flex flex-col fixed h-full w-64 border-r border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 z-30 transition-colors duration-300">
       <div className="p-6">
-        <h1 className="text-2xl font-bold mb-10">ConnectX</h1>
+        <h1 className="text-3xl font-bold mb-10 bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 text-transparent bg-clip-text font-sans">ConnectX</h1>
         
         <nav className="space-y-1">
           {navItems.map((item) => (
