@@ -15,19 +15,19 @@ type NotificationsModalProps = {
   onClose: () => void;
 };
 
-// Sample notification data with Indian names
+// Sample notification data with Indian names and consistent profile images
 const notificationsData = [
   {
     id: 1,
     username: "jaideep",
-    profileImage: "https://randomuser.me/api/portraits/men/32.jpg",
+    profileImage: "https://randomuser.me/api/portraits/men/82.jpg",
     action: "liked your photo",
     timeAgo: "2h"
   },
   {
     id: 2,
     username: "shiva",
-    profileImage: "https://randomuser.me/api/portraits/men/43.jpg",
+    profileImage: "https://randomuser.me/api/portraits/men/83.jpg",
     action: "started following you",
     timeAgo: "1d",
     showFollowButton: true
@@ -35,14 +35,14 @@ const notificationsData = [
   {
     id: 3,
     username: "abhiram",
-    profileImage: "https://randomuser.me/api/portraits/men/64.jpg",
+    profileImage: "https://randomuser.me/api/portraits/men/84.jpg",
     action: "mentioned you in a comment",
     timeAgo: "3d"
   },
   {
     id: 4,
     username: "sarfraz",
-    profileImage: "https://randomuser.me/api/portraits/men/75.jpg",
+    profileImage: "https://randomuser.me/api/portraits/men/85.jpg",
     action: "liked your story",
     timeAgo: "4d"
   },

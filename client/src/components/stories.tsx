@@ -13,62 +13,62 @@ const storiesData: Story[] = [
   {
     id: 1,
     username: "Your story",
-    imageUrl: "https://randomuser.me/api/portraits/men/1.jpg",
+    imageUrl: "https://randomuser.me/api/portraits/men/1.jpg", // Keep current user's image
     viewed: false,
     isCurrentUser: true
   },
   {
     id: 2,
     username: "jaideep",
-    imageUrl: "https://randomuser.me/api/portraits/men/42.jpg",
+    imageUrl: "https://randomuser.me/api/portraits/men/82.jpg",
     viewed: false
   },
   {
     id: 3,
     username: "shiva",
-    imageUrl: "https://randomuser.me/api/portraits/men/33.jpg",
+    imageUrl: "https://randomuser.me/api/portraits/men/83.jpg",
     viewed: false
   },
   {
     id: 4,
     username: "abhiram",
-    imageUrl: "https://randomuser.me/api/portraits/men/23.jpg",
+    imageUrl: "https://randomuser.me/api/portraits/men/84.jpg",
     viewed: false
   },
   {
     id: 5,
     username: "sarfraz",
-    imageUrl: "https://randomuser.me/api/portraits/men/45.jpg",
+    imageUrl: "https://randomuser.me/api/portraits/men/85.jpg",
     viewed: false
   },
   {
     id: 6,
     username: "maharshith",
-    imageUrl: "https://randomuser.me/api/portraits/men/36.jpg",
+    imageUrl: "https://randomuser.me/api/portraits/men/86.jpg",
     viewed: false
   },
   {
     id: 7,
     username: "anjali",
-    imageUrl: "https://randomuser.me/api/portraits/women/28.jpg",
+    imageUrl: "https://randomuser.me/api/portraits/women/82.jpg",
     viewed: false
   },
   {
     id: 8,
     username: "priya",
-    imageUrl: "https://randomuser.me/api/portraits/women/39.jpg",
+    imageUrl: "https://randomuser.me/api/portraits/women/83.jpg",
     viewed: false
   },
   {
     id: 9,
     username: "divya",
-    imageUrl: "https://randomuser.me/api/portraits/women/42.jpg",
+    imageUrl: "https://randomuser.me/api/portraits/women/84.jpg",
     viewed: true
   },
   {
     id: 10,
     username: "meera",
-    imageUrl: "https://randomuser.me/api/portraits/women/17.jpg",
+    imageUrl: "https://randomuser.me/api/portraits/women/85.jpg",
     viewed: true
   }
 ];

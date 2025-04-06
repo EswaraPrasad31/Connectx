@@ -28,7 +28,7 @@ const samplePosts = [
     user: {
       id: 2,
       username: "jaideep",
-      profileImage: "https://randomuser.me/api/portraits/men/42.jpg"
+      profileImage: "https://randomuser.me/api/portraits/men/82.jpg"
     }
   },
   {
@@ -41,7 +41,7 @@ const samplePosts = [
     user: {
       id: 3,
       username: "shiva",
-      profileImage: "https://randomuser.me/api/portraits/men/33.jpg"
+      profileImage: "https://randomuser.me/api/portraits/men/83.jpg"
     }
   },
   {
@@ -54,7 +54,7 @@ const samplePosts = [
     user: {
       id: 7,
       username: "anjali",
-      profileImage: "https://randomuser.me/api/portraits/women/28.jpg"
+      profileImage: "https://randomuser.me/api/portraits/women/82.jpg"
     }
   }
 ];
