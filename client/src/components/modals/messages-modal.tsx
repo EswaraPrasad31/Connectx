@@ -109,9 +109,9 @@ export default function MessagesModal({ isOpen, onClose }: MessagesModalProps) {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-4xl h-[600px] p-0">
-        {/* Close button - positioned outside the flex layout */}
-        <DialogClose className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground">
-          <X className="h-4 w-4" />
+        {/* Close button - positioned properly with better styling */}
+        <DialogClose className="absolute right-4 top-4 z-10 rounded-sm opacity-70 hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300">
+          <X className="h-5 w-5" />
           <span className="sr-only">Close</span>
         </DialogClose>
         

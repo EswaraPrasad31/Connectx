@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { User } from '@shared/schema';
@@ -39,6 +40,16 @@ const suggestionsData = [
 ];
 
 export default function Suggestions({ user }: SuggestionsProps) {
+  const [followedUsers, setFollowedUsers] = useState<number[]>([]);
+  
+  const handleFollow = (id: number) => {
+    if (followedUsers.includes(id)) {
+      setFollowedUsers(followedUsers.filter(userId => userId !== id));
+    } else {
+      setFollowedUsers([...followedUsers, id]);
+    }
+  };
+  
   return (
     <aside className="hidden lg:block w-80 p-8 fixed right-0 top-0 h-full overflow-y-auto border-l border-gray-100 dark:border-gray-700 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm z-10">
       {/* User Profile */}
@@ -73,9 +84,14 @@ export default function Suggestions({ user }: SuggestionsProps) {
             </div>
             <Button 
               variant="ghost" 
-              className="ml-auto text-primary hover:text-primary/80 text-xs font-semibold hover:bg-primary/10"
+              className={`ml-auto text-xs font-semibold ${
+                followedUsers.includes(suggestion.id) 
+                  ? 'text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700' 
+                  : 'text-primary hover:text-primary/80 hover:bg-primary/10'
+              }`}
+              onClick={() => handleFollow(suggestion.id)}
             >
-              Follow
+              {followedUsers.includes(suggestion.id) ? 'Following' : 'Follow'}
             </Button>
           </div>
         ))}

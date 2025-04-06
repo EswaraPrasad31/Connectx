@@ -32,6 +32,10 @@ export default function PostCard({ post }: PostCardProps) {
   const [showComments, setShowComments] = useState(false);
   const [isShared, setIsShared] = useState(false);
   const [isBookmarked, setIsBookmarked] = useState(false);
+  const [comments, setComments] = useState<{username: string, content: string}[]>([
+    {username: 'jaideep', content: 'Amazing shot! 📸'},
+    {username: 'shiva', content: 'This is wonderful!'}
+  ]);
   const queryClient = useQueryClient();
 
   // Format time ago string
@@ -72,7 +76,24 @@ export default function PostCard({ post }: PostCardProps) {
   const handleComment = (e: React.FormEvent) => {
     e.preventDefault();
     if (!comment.trim() || !user) return;
-    commentMutation.mutate();
+    
+    // Add the comment to the local comments state (optimistic update)
+    setComments([...comments, {
+      username: user.username,
+      content: comment
+    }]);
+    
+    // Show the comments section if it's not already visible
+    if (!showComments) {
+      setShowComments(true);
+    }
+    
+    // Try to submit to backend
+    try {
+      commentMutation.mutate();
+    } catch (error) {
+      console.error("Couldn't sync comment with backend, showing optimistic UI update");
+    }
   };
 
   return (
@@ -168,15 +189,12 @@ export default function PostCard({ post }: PostCardProps) {
           
           {showComments && (
             <div className="mt-2 border-t border-gray-100 dark:border-gray-700 pt-2">
-              {/* Sample comments - will replace with actual comments from API */}
-              <div className="text-sm my-2">
-                <span className="font-bold mr-2">jaideep</span>
-                <span className="text-gray-800 dark:text-gray-200">Amazing shot! 📸</span>
-              </div>
-              <div className="text-sm my-2">
-                <span className="font-bold mr-2">shiva</span>
-                <span className="text-gray-800 dark:text-gray-200">This is wonderful!</span>
-              </div>
+              {comments.map((comment, index) => (
+                <div key={index} className="text-sm my-2">
+                  <span className="font-bold mr-2">{comment.username}</span>
+                  <span className="text-gray-800 dark:text-gray-200">{comment.content}</span>
+                </div>
+              ))}
             </div>
           )}
           
